@@ -22,32 +22,38 @@ class _HomeState extends ConsumerState<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceRatio = MediaQuery.of(context).devicePixelRatio;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Image Refresh Demo'),
       ),
       body: Card(
-        elevation: 10,
+        elevation: deviceRatio * 10,
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              SizedBox(
-                child: ListTile(
-                  leading: SizedBox(
-                      width: 100,
-                      child: Image.asset('assets/images/cat-anime.png')),
-                  title: const Center(child: Text('Get your cat')),
-                ),
+              ListTile(
+                leading: Image.asset('assets/images/cat-anime.png'),
+                title: const Center(child: Text('Get your cat')),
               ),
+
               const SizedBox(
                 height: 20,
               ),
               //Image.network('$_imageUrl+#+$_imageVersion')
-              CachedNetworkImage(
-                  placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-                  imageUrl: '$_imageUrl+#+$_imageVersion'),
+              SizedBox(
+                width: deviceRatio * 200,
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: CachedNetworkImage(
+                      placeholder: (context, url) => SizedBox(
+                          width: deviceRatio * 50,
+                          child:
+                              const Center(child: CircularProgressIndicator())),
+                      imageUrl: '$_imageUrl+#+$_imageVersion'),
+                ),
+              ),
             ],
           ),
         ),
