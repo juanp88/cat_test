@@ -23,7 +23,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: 'Random Cats',
       theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.deepPurple,
           visualDensity: VisualDensity.adaptivePlatformDensity),
       home: const Home(),
     );
