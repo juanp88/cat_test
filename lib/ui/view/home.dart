@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../viewmodel/network_notifier.dart';
 
 class Home extends ConsumerStatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -23,6 +26,7 @@ class _HomeState extends ConsumerState<Home> {
   @override
   Widget build(BuildContext context) {
     final deviceRatio = MediaQuery.of(context).devicePixelRatio;
+    var network = ref.read(networkAwareProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Image Refresh Demo'),
@@ -43,17 +47,20 @@ class _HomeState extends ConsumerState<Home> {
               ),
               //Image.network('$_imageUrl+#+$_imageVersion')
               SizedBox(
-                width: deviceRatio * 200,
-                child: FittedBox(
-                  fit: BoxFit.fill,
-                  child: CachedNetworkImage(
-                      placeholder: (context, url) => SizedBox(
-                          width: deviceRatio * 50,
-                          child:
-                              const Center(child: CircularProgressIndicator())),
-                      imageUrl: '$_imageUrl+#+$_imageVersion'),
-                ),
-              ),
+                  width: deviceRatio * 200,
+                  child: FittedBox(
+                    fit: BoxFit.fill,
+                    child: (network == NetworkStatus.Off)
+                        ? const Center(
+                            child: Text('No internet connection'),
+                          )
+                        : CachedNetworkImage(
+                            placeholder: (context, url) => SizedBox(
+                                width: deviceRatio * 50,
+                                child: const Center(
+                                    child: CircularProgressIndicator())),
+                            imageUrl: '$_imageUrl+#+$_imageVersion'),
+                  )),
             ],
           ),
         ),
